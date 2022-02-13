@@ -110,6 +110,7 @@ post '/details/:post_id' do
   # получаем переменную из POST запроса
   @content = params[:content]
 
+  @db.execute 'INSERT INTO Comments (Content, Created_Date, post_id) values (?, datetime(), ?)', [@content, post_id]
   erb "You tiped comment #{@content} for post #{post_id}"
 
  end 
