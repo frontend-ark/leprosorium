@@ -9,8 +9,18 @@ def init_db
   @db.results_as_hash = true
 end
 
-before do
+before do #выполняется перез каждым запросом
   init_db
+end
+
+configure do #вызывается всегда, когда обновляется страница или внесены новые данные
+  init_db
+  @db.execute ' CREATE TABLE IF NOT EXISTS "Posts"
+  (
+    "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "Created_Date" DATE,
+    "Content" TEXT
+  ); '
 end
 
 get '/' do
