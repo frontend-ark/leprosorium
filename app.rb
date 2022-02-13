@@ -50,5 +50,11 @@ end
 post '/new' do
   # получаем переменную из POST запроса
   @content = params[:content] # name="content" в textarea в new.erb
+  
+  if @content.length <= 0
+    # @error прописано в layout
+    @error = 'Type post text'
+    return erb :new
+  end
   erb "You typed: #{@content}"    
 end
