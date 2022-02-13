@@ -34,6 +34,11 @@ configure do
 end
 
 get '/' do
+
+  # выбираем список постов из базы данных  в порядке убывания по ID
+
+  @result = db.execute 'SELECT * FROM Posts ORDER BY Id DESC'
+
 	erb :index
 end
 
