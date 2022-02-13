@@ -9,12 +9,22 @@ def init_db
   @db.results_as_hash = true
 end
 
-before do #выполняется перез каждым запросом
+before do # выполняется перез каждым запросом, после перезакрузки любой страницы
+  # инициализация бд
   init_db
 end
 
-configure do #вызывается всегда, когда обновляется страница или внесены новые данные
+# configure вызывается каждый раз при конфигурации приложения
+# когда изменился код программы и перезагрузилась страница
+
+configure do 
+
+  # инициализация базы данных
+
   init_db
+
+  # создает таблицу если она не существует
+
   @db.execute ' CREATE TABLE IF NOT EXISTS "Posts"
   (
     "Id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,11 +37,18 @@ get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
 end
 
+# обработчик get-запроса /new
+# (браузер получает страницу с сервера)
+
 get '/new' do
   erb :new     
 end
 
+# обработчик post-запроса /new
+# браузер отправляет данные на сервер
+
 post '/new' do
-  @content = params[:content] #name="content" в textarea в new.erb
+  # получаем переменную из POST запроса
+  @content = params[:content] # name="content" в textarea в new.erb
   erb "You typed: #{@content}"    
 end
