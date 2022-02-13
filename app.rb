@@ -66,5 +66,8 @@ post '/new' do
 
   @db.execute 'INSERT INTO Posts (Content, Created_Date) values (?, datetime())', [@content]
 
+  # перенаправление на главную страницу
+
+  redirect to '/'
   erb "You typed: #{@content}"    
 end
