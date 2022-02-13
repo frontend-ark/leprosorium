@@ -95,7 +95,7 @@ get '/details/:post_id' do
    @row = results[0]
 
    # выбираем комментарии для нашего поста
-   @comments = db.execute 'select * from Comments where post_id = ? order by Id', [post_id] 
+   @comments = @db.execute 'select * from Comments where post_id = ? order by Id', [post_id] 
 
   # возвращаем представление details.erb
   erb :details
@@ -114,6 +114,8 @@ post '/details/:post_id' do
   @content = params[:content]
 
   @db.execute 'INSERT INTO Comments (Content, Created_Date, post_id) values (?, datetime(), ?)', [@content, post_id]
-  erb "You tiped comment #{@content} for post #{post_id}"
+  
+  # перенаправление на страницу поста
+  redirect to('/details/' + post_id)
 
  end 
